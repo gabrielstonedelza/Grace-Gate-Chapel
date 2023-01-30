@@ -31,7 +31,7 @@ class CheckInToday(models.Model):
     member = models.ForeignKey(AddMember, on_delete=models.CASCADE)
     has_checked_in = models.BooleanField(default=False)
     time_checked_in = models.TimeField(auto_now_add=True)
-    date_checked_in = models.TimeField(auto_now_add=True)
+    date_checked_in = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.member.name
