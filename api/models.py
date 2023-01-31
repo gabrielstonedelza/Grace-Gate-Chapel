@@ -16,9 +16,9 @@ NOTIFICATIONS_TRIGGERS = (
 )
 
 class AddMember(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    email = models.EmailField(max_length=255, unique=True)
-    phone_number = models.CharField(max_length=16, unique=True)
+    name = models.CharField(max_length=255, unique=True, blank=True)
+    email = models.EmailField(max_length=255, unique=True, blank=True)
+    phone_number = models.CharField(max_length=16, unique=True, blank=True)
     home_address = models.CharField(max_length=100, blank=True)
     digital_address = models.CharField(max_length=100, blank=True)
     date_added = models.DateTimeField(auto_now_add=True)

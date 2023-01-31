@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import AddMember, CheckInToday, Announcements, Events
+
+
+admin.site.register(AddMember)
+admin.site.register(CheckInToday)
+admin.site.register(Announcements)
+admin.site.register(Events)

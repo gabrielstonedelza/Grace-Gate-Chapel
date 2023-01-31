@@ -45,8 +45,8 @@ def member_detail(request, pk):
 
 @api_view(['GET', 'PUT'])
 @permission_classes([permissions.AllowAny])
-def update_member(request, id):
-    member = get_object_or_404(AddMember, id=id)
+def update_member(request, pk):
+    member = get_object_or_404(AddMember, pk=pk)
     serializer = AddMemberSerializer(member, data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -63,11 +63,12 @@ def member_delete(request, pk):
         pass
     return Response(status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['POST'])
-def add_member_check_in(request):
+@api_view(['GET','POST'])
+def add_member_check_in(request,phone_number):
+    member = get_object_or_404(AddMember, phone_number=phone_number)
     serializer = CheckInTodaySerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(member=member)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -128,7 +129,7 @@ class AllAnnouncementsView(generics.ListCreateAPIView):
 
 # notifications
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+
 def get_all_user_notifications(request):
     notifications = Notifications.objects.filter(notification_to_passenger=request.user).order_by(
         '-date_created')[:50]
@@ -137,7 +138,7 @@ def get_all_user_notifications(request):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+
 def get_all_driver_notifications(request):
     notifications = Notifications.objects.filter(notification_to=request.user).order_by(
         '-date_created')
@@ -146,7 +147,6 @@ def get_all_driver_notifications(request):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
 def get_user_notifications(request):
     notifications = Notifications.objects.filter(notification_to=request.user).filter(
         read="Not Read").order_by(
@@ -156,7 +156,6 @@ def get_user_notifications(request):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
 def get_triggered_notifications(request):
     notifications = Notifications.objects.filter(notification_to=request.user).filter(
         notification_trigger="Triggered").filter(
@@ -166,7 +165,6 @@ def get_triggered_notifications(request):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
 def read_notification(request):
     notifications = Notifications.objects.filter(notification_to=request.user).filter(
         read="Not Read").order_by('-date_created')[:50]
@@ -178,11 +176,12 @@ def read_notification(request):
     return Response(serializer.data)
 
 @api_view(['GET', 'PUT'])
-def approve_check_in(request, id):
-    member_checking_in = get_object_or_404(AddMember, id=id)
-    serializer = AddMemberSerializer(member_checking_in, data=request.data)
+def approve_check_in(request, pk):
+    member_checking_in = get_object_or_404(AddMember, pk=pk)
+    check_in_member = get_object_or_404(CheckInToday,  member=member_checking_in.id)
+    serializer = CheckInTodaySerializer(check_in_member, data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(member=member_checking_in)
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
