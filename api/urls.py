@@ -10,6 +10,8 @@ urlpatterns = [
     path('member_detail/<int:pk>/', views.member_detail),
     path('member_update/<int:id>/', views.update_member),
     path('member_delete/<int:id>/', views.member_delete),
+    path('approve_check_in/<int:id>/', views.approve_check_in),
+    path('my_check_in/<int:phone_number>/', views.get_my_check_ins),
     path('check_in/', views.add_member_check_in),
     path('add_event/', views.add_event),
     path('add_announcement/', views.add_announcement),

@@ -176,3 +176,20 @@ def read_notification(request):
 
     serializer = NotificationsSerializer(notifications, many=True)
     return Response(serializer.data)
+
+@api_view(['GET', 'PUT'])
+def approve_check_in(request, id):
+    member_checking_in = get_object_or_404(AddMember, id=id)
+    serializer = AddMemberSerializer(member_checking_in, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def get_my_check_ins(request, phone_number):
+    member = get_object_or_404(AddMember, phone_number=phone_number)
+    my_check_ins = CheckInToday.objects.filter(member=member)
+    serializer = CheckInTodaySerializer(my_check_ins, many=True)
+    return Response(serializer.data)
