@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import AddMember, CheckInToday, Announcements, Events, Notifications
+from .models import AddMember, CheckInToday, Announcements, Events, Notifications, MorningDevotion
 
 class AddMemberSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,8 +10,8 @@ class AddMemberSerializer(serializers.ModelSerializer):
 class CheckInTodaySerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckInToday
-        fields = ['id', 'member', 'has_checked_in', 'time_checked_in', 'date_checked_in']
-        read_only_fields = ['member']
+        fields = ['id', 'user', 'has_checked_in', 'time_checked_in', 'date_checked_in']
+        read_only_fields = ['user']
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):
@@ -30,3 +30,9 @@ class NotificationsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notifications
         fields = ['id', 'notification_id', 'notification_title', 'notification_message', 'read', 'notification_trigger', 'notification_from', 'notification_to', 'date_created']
+
+
+class MorningDevotionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MorningDevotion
+        fields = ['id', 'title', 'quotations', 'message', 'date_created']

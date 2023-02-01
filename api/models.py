@@ -1,4 +1,8 @@
 from django.db import models
+from django.conf import settings
+from django.utils import timezone
+
+User = settings.AUTH_USER_MODEL
 
 READ_STATUS = (
     ("Read", "Read"),
@@ -28,13 +32,13 @@ class AddMember(models.Model):
 
 
 class CheckInToday(models.Model):
-    member = models.ForeignKey(AddMember, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     has_checked_in = models.BooleanField(default=False)
     time_checked_in = models.TimeField(auto_now_add=True)
     date_checked_in = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.member.name
+        return self.user.username
 
 
 class Announcements(models.Model):
@@ -63,9 +67,19 @@ class Notifications(models.Model):
     read = models.CharField(max_length=20, choices=NOTIFICATIONS_STATUS, default="Not Read")
     notification_trigger = models.CharField(max_length=255, choices=NOTIFICATIONS_TRIGGERS, default="Triggered",
                                             blank=True)
-    notification_from = models.ForeignKey(AddMember, on_delete=models.CASCADE, null=True)
-    notification_to = models.ForeignKey(AddMember, on_delete=models.CASCADE, related_name="DeUser_receiving_notification",)
+    notification_from = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    notification_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="DeUser_receiving_notification", null=True)
+    notification_to_admin = models.ForeignKey(User, on_delete=models.CASCADE, related_name="Admin_receiving_notification",default=1)
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.notification_title
+
+class MorningDevotion(models.Model):
+    title = models.CharField(max_length=255)
+    quotations = models.TextField()
+    message = models.TextField()
+    date_created = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
