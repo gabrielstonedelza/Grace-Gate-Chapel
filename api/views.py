@@ -233,3 +233,27 @@ def devotion_detail(request,pk):
     devotion = get_object_or_404(MorningDevotion, pk=pk)
     serializer = MorningDevotionSerializer(devotion,many=False)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def announcement_detail(request,pk):
+    announcement = get_object_or_404(Announcements, pk=pk)
+    serializer = AnnouncementSerializer(announcement,many=False)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def event_detail(request,pk):
+    event = get_object_or_404(Events, pk=pk)
+    serializer = EventsSerializer(event,many=False)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticated])
+def checkin_detail(request,pk):
+    checkin = get_object_or_404(CheckInToday, pk=pk)
+    serializer = CheckInTodaySerializer(checkin,many=False)
+    return Response(serializer.data)

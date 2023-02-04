@@ -19,6 +19,9 @@ urlpatterns = [
     # detail requests,update and delete
     # path('member_detail/<int:pk>/', views.member_detail),
     path('devotion_detail/<int:pk>/', views.devotion_detail),
+    path('announcement_detail/<int:pk>/', views.announcement_detail),
+    path('event_detail/<int:pk>/', views.event_detail),
+    path('checkin_detail/<int:pk>/', views.checkin_detail),
     # path('member_update/<int:pk>/', views.update_member),
     # path('member_delete/<int:pk>/', views.member_delete),
     path('approve_check_in/<int:pk>/', views.approve_check_in),
