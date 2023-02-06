@@ -26,6 +26,12 @@ urlpatterns = [
     # path('member_delete/<int:pk>/', views.member_delete),
     path('approve_check_in/<int:pk>/', views.approve_check_in),
     path('my_check_in/', views.get_my_check_ins),
+    path("delete_user/<int:pk>/", views.user_delete),
+    #     notifications
+    path('my_notifications/', views.get_all_user_notifications),
+    path('get_user_unread_notifications/', views.get_user_unread_notifications),
+    path('get_triggered_notifications/', views.get_triggered_notifications),
+    path('read_notification/', views.read_notification)
 
 
 ]

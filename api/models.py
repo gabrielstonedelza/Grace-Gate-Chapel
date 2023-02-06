@@ -44,6 +44,7 @@ class CheckInToday(models.Model):
 class Announcements(models.Model):
     title = models.CharField(max_length=255)
     message = models.TextField()
+    views = models.IntegerField(default=0)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -79,6 +80,7 @@ class MorningDevotion(models.Model):
     title = models.CharField(max_length=255)
     quotations = models.TextField()
     message = models.TextField()
+    views = models.IntegerField(default=0)
     date_created = models.DateTimeField(auto_now=True)
 
     def __str__(self):

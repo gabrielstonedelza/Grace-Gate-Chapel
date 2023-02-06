@@ -17,7 +17,7 @@ class CheckInTodaySerializer(serializers.ModelSerializer):
 class AnnouncementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Announcements
-        fields = ['id', 'title' ,'message', 'date_added']
+        fields = ['id', 'title' ,'message', 'date_added','views']
 
 
 class EventsSerializer(serializers.ModelSerializer):
@@ -35,4 +35,4 @@ class NotificationsSerializer(serializers.ModelSerializer):
 class MorningDevotionSerializer(serializers.ModelSerializer):
     class Meta:
         model = MorningDevotion
-        fields = ['id', 'title', 'quotations', 'message', 'date_created']
+        fields = ['id', 'title', 'quotations', 'message', 'date_created','views']

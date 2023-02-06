@@ -144,18 +144,10 @@ def get_all_user_notifications(request):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
-def get_all_driver_notifications(request):
-    notifications = Notifications.objects.filter(notification_to=request.user).order_by(
-        '-date_created')
-    serializer = NotificationsSerializer(notifications, many=True)
-    return Response(serializer.data)
-
 
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
-def get_user_notifications(request):
+def get_user_unread_notifications(request):
     notifications = Notifications.objects.filter(notification_to=request.user).filter(
         read="Not Read").order_by(
         '-date_created')[:50]
@@ -231,6 +223,9 @@ class AllDevotionView(generics.ListCreateAPIView):
 @permission_classes([permissions.IsAuthenticated])
 def devotion_detail(request,pk):
     devotion = get_object_or_404(MorningDevotion, pk=pk)
+    if devotion:
+        devotion.views += 1
+        devotion.save()
     serializer = MorningDevotionSerializer(devotion,many=False)
     return Response(serializer.data)
 
@@ -239,6 +234,9 @@ def devotion_detail(request,pk):
 @permission_classes([permissions.IsAuthenticated])
 def announcement_detail(request,pk):
     announcement = get_object_or_404(Announcements, pk=pk)
+    if announcement:
+        announcement.views += 1
+        announcement.save()
     serializer = AnnouncementSerializer(announcement,many=False)
     return Response(serializer.data)
 
@@ -257,3 +255,13 @@ def checkin_detail(request,pk):
     checkin = get_object_or_404(CheckInToday, pk=pk)
     serializer = CheckInTodaySerializer(checkin,many=False)
     return Response(serializer.data)
+
+@api_view(['GET', 'DELETE'])
+@permission_classes([permissions.AllowAny])
+def user_delete(request, pk):
+    try:
+        user = GGCUser.objects.get(pk=pk)
+        user.delete()
+    except GGCUser.DoesNotExist:
+        return Http404
+    return Response(status=status.HTTP_204_NO_CONTENT)
