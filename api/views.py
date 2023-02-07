@@ -79,7 +79,7 @@ class AllCheckInSTodayView(generics.ListCreateAPIView):
     de_date = my_date.date()
     queryset = check_ins_today = CheckInToday.objects.filter(date_checked_in=de_date).order_by('-date_checked_in')
     serializer_class = CheckInTodaySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @method_decorator(cache_page(60 * 60 * 2))
     def list(self, request):
@@ -89,7 +89,7 @@ class AllCheckInSTodayView(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 @api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def add_event(request):
     serializer = EventsSerializer(data=request.data)
     if serializer.is_valid():
@@ -101,7 +101,7 @@ def add_event(request):
 class AllEventsView(generics.ListCreateAPIView):
     queryset = Events.objects.all().order_by('-date_added')
     serializer_class = EventsSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @method_decorator(cache_page(60 * 60 * 2))
     def list(self, request):
@@ -112,7 +112,7 @@ class AllEventsView(generics.ListCreateAPIView):
 
 
 @api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def add_announcement(request):
     serializer = AnnouncementSerializer(data=request.data)
     if serializer.is_valid():
@@ -124,7 +124,7 @@ def add_announcement(request):
 class AllAnnouncementsView(generics.ListCreateAPIView):
     queryset = Announcements.objects.all().order_by('-date_added')
     serializer_class = AnnouncementSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @method_decorator(cache_page(60 * 60 * 2))
     def list(self, request):
@@ -136,7 +136,7 @@ class AllAnnouncementsView(generics.ListCreateAPIView):
 
 # notifications
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def get_all_user_notifications(request):
     notifications = Notifications.objects.filter(notification_to=request.user).order_by(
         '-date_created')[:50]
@@ -146,7 +146,7 @@ def get_all_user_notifications(request):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def get_user_unread_notifications(request):
     notifications = Notifications.objects.filter(notification_to=request.user).filter(
         read="Not Read").order_by(
@@ -156,7 +156,7 @@ def get_user_unread_notifications(request):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def get_triggered_notifications(request):
     notifications = Notifications.objects.filter(notification_to=request.user).filter(
         notification_trigger="Triggered").filter(
@@ -166,7 +166,7 @@ def get_triggered_notifications(request):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def read_notification(request):
     notifications = Notifications.objects.filter(notification_to=request.user).filter(
         read="Not Read").order_by('-date_created')[:50]
@@ -178,7 +178,7 @@ def read_notification(request):
     return Response(serializer.data)
 
 @api_view(['GET', 'PUT'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def approve_check_in(request, pk):
     check_in_member = get_object_or_404(CheckInToday,  user=pk)
     serializer = CheckInTodaySerializer(check_in_member, data=request.data)
@@ -189,7 +189,7 @@ def approve_check_in(request, pk):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def get_my_check_ins(request):
     my_check_ins = CheckInToday.objects.filter(user=request.user)
     serializer = CheckInTodaySerializer(my_check_ins, many=True)
@@ -198,7 +198,7 @@ def get_my_check_ins(request):
 
 
 @api_view(['POST'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def add_devotion(request):
     serializer = MorningDevotionSerializer(data=request.data)
     if serializer.is_valid():
@@ -210,7 +210,7 @@ def add_devotion(request):
 class AllDevotionView(generics.ListCreateAPIView):
     queryset = MorningDevotion.objects.all().order_by('-date_created')
     serializer_class = MorningDevotionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @method_decorator(cache_page(60 * 60 * 2))
     def list(self, request):
@@ -220,7 +220,7 @@ class AllDevotionView(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def devotion_detail(request,pk):
     devotion = get_object_or_404(MorningDevotion, pk=pk)
     if devotion:
@@ -231,7 +231,7 @@ def devotion_detail(request,pk):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def announcement_detail(request,pk):
     announcement = get_object_or_404(Announcements, pk=pk)
     if announcement:
@@ -242,7 +242,7 @@ def announcement_detail(request,pk):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def event_detail(request,pk):
     event = get_object_or_404(Events, pk=pk)
     serializer = EventsSerializer(event,many=False)
@@ -250,7 +250,7 @@ def event_detail(request,pk):
 
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 def checkin_detail(request,pk):
     checkin = get_object_or_404(CheckInToday, pk=pk)
     serializer = CheckInTodaySerializer(checkin,many=False)
