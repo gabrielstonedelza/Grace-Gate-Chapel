@@ -10,7 +10,7 @@ class AddMemberSerializer(serializers.ModelSerializer):
 class CheckInTodaySerializer(serializers.ModelSerializer):
     class Meta:
         model = CheckInToday
-        fields = ['id', 'user', 'has_checked_in', 'time_checked_in', 'date_checked_in']
+        fields = ['id', 'user', 'has_checked_in', 'time_checked_in', 'date_checked_in','get_uesrname']
         read_only_fields = ['user']
 
 

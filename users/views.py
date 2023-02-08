@@ -73,6 +73,16 @@ def update_username(request):
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET','PUT'])
+@permission_classes([permissions.IsAuthenticated])
+def admin_update_user(request,pk):
+    user = get_object_or_404(GGCUser,pk=pk)
+    serializer = UsersSerializer(user, data=request.data)
+    if serializer.is_valid():
+        serializer.save(user=user)
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
