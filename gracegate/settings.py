@@ -185,3 +185,4 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
     'access-control-allow-origin',
 ]
+SESSION_COOKIE_SECURE = True
